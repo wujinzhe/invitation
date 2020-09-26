@@ -23,22 +23,8 @@
       </div>
       <!-- <button @click="turn('one', true)">下一篇</button> -->
     </div>
-    <div :class="{page: true, two: true, turn: turnObj.two}">
+    <div :class="{page: true, two: true }">
       <!-- TODO 这里添加第二页的东西 -->
-    </div>
-    <div :class="{page: true, three: true, turn: turnObj.three}">
-      <div>Slide 3</div>
-      <button @click="turn('two', false)">上一篇</button>
-      <button @click="turn('three', true)">下一篇</button>
-    </div>
-    <div :class="{page: true, four: true, turn: turnObj.four}">
-      <div>Slide 4</div>
-      <button @click="turn('three', false)">上一篇</button>
-      <button @click="turn('four', true)">下一篇</button>
-    </div>
-    <div :class="{page: true, five: true}">
-      <div>Slide 5</div>
-      <button @click="turn('four', false)">上一篇</button>
     </div>
   </div>
 </template>
@@ -64,11 +50,9 @@ export default {
   data () {
     return {
       turnObj: {
-        one: false,
-        two: false,
-        three: false,
-        four: false
+        one: false
       },
+      animating: false, // 是否在动画执行中
       pendantList: [
         {
           type: 1,
@@ -159,8 +143,7 @@ export default {
   // },
   mounted () {
     // 初始化手势库
-    var hammer = new Hammer(document.getElementById('page-list'))
-    this.hammer = hammer
+    this.initHammer()
 
     // hammerTest.on('pan panmove swipe swipeup press pressup', function (ev) {
     //   console.log(ev.type)
@@ -177,7 +160,33 @@ export default {
     },
 
     initHammer () {
+      var hammer = new Hammer(document.getElementById('page-list'))
+      this.hammer = hammer
 
+      // 翻下一页
+      hammer.on('swipeleft', (ev) => {
+        // 动画执行中 不做任何操作
+        if (this.animating) return
+
+        // 说明在第一页，则需要打开第一页
+        if (!this.turnObj.one) {
+          this.turnObj.one = true
+        }
+      })
+
+      // 翻上一页面
+      hammer.on('swiperight', (ev) => {
+        if (this.animating) return
+
+        console.log('right', ev.type)
+        /**
+         * 说明当前页面也在第二页，
+         */
+        if (this.turnObj.one) {
+          // 说明已经再第二页
+          this.turnObj.one = false
+        }
+      })
     }
   }
 }
@@ -228,8 +237,9 @@ export default {
 }
 
 .two {
-  background: yellow;
   z-index: 4;
+  background-image: url('/static/image/page2.jpg');
+  box-sizing: border-box;
 }
 .three {
   background: blue;
