@@ -11,6 +11,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "hammerjs": "^2.0.8",
     "swiper": "^6.2.0",
     "vue": "^2.5.2",
     "vue-awesome-swiper": "^4.1.1"

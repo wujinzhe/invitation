@@ -1,15 +1,30 @@
 <template>
-  <div class="page-list">
+  <div class="page-list" id="page-list">
     <div :class="{page: true, one: true, turn: turnObj.one}">
-      <div>
-        水电费第三方第三方水电费第三方第三方士大夫水电费水电费水电费水电费水电费水电费水电费水电费手机登录看风景时大立科技弗兰克斯的积分删掉了开房记录SDK见风使舵开了房加快速度垃圾分类打开时间放声大哭链接发时空来电副驾驶的熟练度附近时考虑到荆防颗粒时代峻峰莱克斯顿荆防颗粒圣诞节福利看电视剧疯狂老爹数据发莱克斯顿荆防颗粒时代峻峰圣诞快乐副驾驶的离开上课了地方加克鲁赛德荆防颗粒时代峻峰克鲁赛德荆防颗粒圣诞节福利看电视剧反馈了时代峻峰莱克斯顿副教授邓丽君省的浪费精灵盛典会计分录开始搭建发了开始搭建弗兰克斯代发奖励SDK临时冻结弗兰克斯的积分流失的快捷方式独立开发见识到了
+      <div class="border">
+        <div class="decoration">
+          <template v-for="item in pendantList">
+            <pendant :left="item.left" :type="item.type" :height="item.height" :key="item.left"/>
+          </template>
+        </div>
+
+        <div class="title">
+          <img :src="'/static/image/title.png'" />
+        </div>
+        <div class="people">
+          <img :src="'/static/image/people.png'" />
+        </div>
+        <div class="title2">
+          <img :src="'/static/image/title2.png'" />
+        </div>
+        <div class="text">
+          <img :src="'/static/image/text.png'" />
+        </div>
       </div>
-      <button @click="turn('one', true)">下一篇</button>
+      <!-- <button @click="turn('one', true)">下一篇</button> -->
     </div>
     <div :class="{page: true, two: true, turn: turnObj.two}">
-      <div>Slide 2</div>
-      <button @click="turn('one', false)">上一篇</button>
-      <button @click="turn('two', true)">下一篇</button>
+      <!-- TODO 这里添加第二页的东西 -->
     </div>
     <div :class="{page: true, three: true, turn: turnObj.three}">
       <div>Slide 3</div>
@@ -30,15 +45,18 @@
 
 <script>
 import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper'
+import Hammer from 'hammerjs'
 // import 'swiper/css/swiper.css'
 // If you use Swiper 6.0.0 or higher
 import 'swiper/swiper-bundle.css'
+import Pendant from './Pendant'
 
 export default {
   name: 'CustomeSwiper',
   components: {
     Swiper,
-    SwiperSlide
+    SwiperSlide,
+    Pendant
   },
   directives: {
     swiper: directive
@@ -50,7 +68,80 @@ export default {
         two: false,
         three: false,
         four: false
-      }
+      },
+      pendantList: [
+        {
+          type: 1,
+          left: 10,
+          height: 100
+        },
+        {
+          type: 2,
+          left: 15,
+          height: 50
+        },
+        {
+          type: 3,
+          left: 17,
+          height: 100
+        },
+        {
+          type: 4,
+          left: 27,
+          height: 40
+        },
+        {
+          type: 1,
+          left: 34,
+          height: 50
+        },
+        {
+          type: 2,
+          left: 40,
+          height: 70
+        },
+        {
+          type: 3,
+          left: 42,
+          height: 80
+        },
+        {
+          type: 4,
+          left: 49,
+          height: 30
+        },
+        {
+          type: 1,
+          left: 58,
+          height: 50
+        },
+        {
+          type: 2,
+          left: 62,
+          height: 100
+        },
+        {
+          type: 3,
+          left: 70,
+          height: 80
+        },
+        {
+          type: 4,
+          left: 78,
+          height: 60
+        },
+        {
+          type: 1,
+          left: 85,
+          height: 100
+        },
+        {
+          type: 2,
+          left: 90,
+          height: 70
+        }
+      ],
+      hammer: null // 手势库
       // swiperOptions: {
       //   pagination: {
       //     el: '.swiper-pagination'
@@ -67,6 +158,13 @@ export default {
   //   }
   // },
   mounted () {
+    // 初始化手势库
+    var hammer = new Hammer(document.getElementById('page-list'))
+    this.hammer = hammer
+
+    // hammerTest.on('pan panmove swipe swipeup press pressup', function (ev) {
+    //   console.log(ev.type)
+    // })
     // console.log('Current Swiper instance object', this.swiper)
     // this.swiper.slideTo(3, 1000, false)
   },
@@ -76,6 +174,10 @@ export default {
      */
     turn (target, isOpen) {
       this.turnObj[target] = isOpen
+    },
+
+    initHammer () {
+
     }
   }
 }
@@ -90,9 +192,41 @@ export default {
 }
 
 .one {
-  background: red;
   z-index: 5;
+  background-image: url('/static/image/bg.jpg');
+  padding: 10px;
+  box-sizing: border-box;
 }
+
+.one .border {
+  width: 100%;
+  height: 100%;
+  background-image: url('/static/image/border.png');
+  background-size: 100% 100%;
+  position: relative;
+  display: inline-block;
+}
+
+.one .title {
+  width: 50%;
+  margin: 50% auto 0;
+}
+
+.one .people {
+  width: 60%;
+  margin: 5% auto 0;
+}
+
+.one .title2 {
+  width: 40%;
+  margin: 5% auto;
+}
+
+.one .text {
+  width: 70%;
+  margin: 15% auto;
+}
+
 .two {
   background: yellow;
   z-index: 4;
@@ -119,6 +253,7 @@ export default {
   transform: rotate3d(0, 0, 0, 0deg);
   transform-origin: left;
   transition: 1s;
+  background-size: cover;
 }
 
 .turn {
