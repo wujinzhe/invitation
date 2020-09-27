@@ -29,7 +29,7 @@
         <img v-else :src="'/static/image/stop.png'" />
       </div>
     </div>
-    <div :class="{page: true, two: true }">
+    <div :class="{page: true, two: true }" v-if="delay">
       <div :class="{music: true, 'music-animate': playStatus === 'play'}" @click="play">
         <img v-if="playStatus === 'play'" :src="'/static/image/play.png'" />
         <img v-else :src="'/static/image/stop.png'" />
@@ -63,6 +63,7 @@ export default {
       turnObj: {
         one: false
       },
+      delay: false,
       animating: false, // 是否在动画执行中
       pendantList: [
         {
@@ -144,7 +145,13 @@ export default {
     // 初始化手势库
     this.initHammer()
 
-    this.$refs.audio.play()
+    document.addEventListener('WeixinJSBridgeReady', () => { // 暂时还不知道Yixin是什么东西...
+      this.$refs.audio.play()
+    }, false)
+
+    setTimeout(() => {
+      this.delay = true // 解决页面一加载会闪一下
+    }, 500)
   },
   methods: {
     /** 播放，停止 */
