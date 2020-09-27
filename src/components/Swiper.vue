@@ -21,7 +21,6 @@
           <img :src="'/static/image/text.png'" />
         </div>
       </div>
-      <!-- <button @click="turn('one', true)">下一篇</button> -->
     </div>
     <div :class="{page: true, two: true }">
       <!-- TODO 这里添加第二页的东西 -->
@@ -32,8 +31,6 @@
 <script>
 import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper'
 import Hammer from 'hammerjs'
-// import 'swiper/css/swiper.css'
-// If you use Swiper 6.0.0 or higher
 import 'swiper/swiper-bundle.css'
 import Pendant from './Pendant'
 
@@ -126,30 +123,11 @@ export default {
         }
       ],
       hammer: null // 手势库
-      // swiperOptions: {
-      //   pagination: {
-      //     el: '.swiper-pagination'
-      //   },
-      //   direction: 'vertical'
-      //   // effect : 'cube',
-      //   // Some Swiper option/callback...
-      // }
     }
   },
-  // computed: {
-  //   swiper () {
-  //     return this.$refs.mySwiper.$swiper
-  //   }
-  // },
   mounted () {
     // 初始化手势库
     this.initHammer()
-
-    // hammerTest.on('pan panmove swipe swipeup press pressup', function (ev) {
-    //   console.log(ev.type)
-    // })
-    // console.log('Current Swiper instance object', this.swiper)
-    // this.swiper.slideTo(3, 1000, false)
   },
   methods: {
     /**
@@ -238,7 +216,7 @@ export default {
 
 .two {
   z-index: 4;
-  background-image: url('/static/image/page2.jpg');
+  background-image: url('/static/image/page2-1.jpg');
   box-sizing: border-box;
 }
 .three {
