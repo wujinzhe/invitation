@@ -28,11 +28,17 @@ export default {
         '/static/image/p2.png',
         '/static/image/p3.png',
         '/static/image/p4.png',
-        '/static/image/page2.jpg',
         '/static/image/people.png',
         '/static/image/text.png',
         '/static/image/title.png',
-        '/static/image/title2.png'
+        '/static/image/title2.png',
+        '/static/image/play.png',
+        '/static/image/stop.png',
+        '/static/image/page-bottom.png',
+        '/static/image/page-top.png',
+        '/static/image/text1.png',
+        '/static/image/text2.png',
+        '/static/music/holy.mp3'
       ],
       loadingFinish: false,
       progress: 0
@@ -46,6 +52,13 @@ export default {
       }, 500)
     })
   },
+  // watch: {
+  //   loadingFinish (val) {
+  //     if (val) {
+  //       // 表示资源已经都加载成功了
+  //     }
+  //   }
+  // },
   methods: {
     async loadingImg () {
       const list = [...this.imgList]

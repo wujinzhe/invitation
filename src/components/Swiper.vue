@@ -1,5 +1,7 @@
 <template>
   <div class="page-list" id="page-list">
+    <audio src="/static/music/holy.mp3" ref="audio" id="myaudio" controls="controls" loop="true" hidden="true"></audio>
+
     <div :class="{page: true, one: true, turn: turnObj.one}">
       <div class="border">
         <div class="decoration">
@@ -21,9 +23,21 @@
           <img :src="'/static/image/text.png'" />
         </div>
       </div>
+
+      <div :class="{music: true, 'music-animate': playStatus === 'play'}" @click="play">
+        <img v-if="playStatus === 'play'" :src="'/static/image/play.png'" />
+        <img v-else :src="'/static/image/stop.png'" />
+      </div>
     </div>
     <div :class="{page: true, two: true }">
-      <!-- TODO 这里添加第二页的东西 -->
+      <div :class="{music: true, 'music-animate': playStatus === 'play'}" @click="play">
+        <img v-if="playStatus === 'play'" :src="'/static/image/play.png'" />
+        <img v-else :src="'/static/image/stop.png'" />
+      </div>
+      <img :src="'/static/image/page-top.png'" class="page-top"/>
+      <img :src="'/static/image/text2.png'" class="text2"/>
+      <img :src="'/static/image/text1.png'" class="text1"/>
+      <img :src="'/static/image/page-bottom.png'" class="page-bottom"/>
     </div>
   </div>
 </template>
@@ -122,21 +136,29 @@ export default {
           height: 70
         }
       ],
-      hammer: null // 手势库
+      hammer: null, // 手势库
+      playStatus: 'play' // pause
     }
   },
   mounted () {
     // 初始化手势库
     this.initHammer()
+
+    this.$refs.audio.play()
   },
   methods: {
-    /**
-     * 第几页打开还是关闭
-     */
-    turn (target, isOpen) {
-      this.turnObj[target] = isOpen
+    /** 播放，停止 */
+    play () {
+      if (this.playStatus === 'play') {
+        this.$refs.audio.pause()
+        this.playStatus = 'pause'
+      } else {
+        this.$refs.audio.play()
+        this.playStatus = 'play'
+      }
     },
 
+    /** 初始化手势库 */
     initHammer () {
       var hammer = new Hammer(document.getElementById('page-list'))
       this.hammer = hammer
@@ -171,11 +193,62 @@ export default {
 </script>
 
 <style scoped>
+
+@keyframes music {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 .page-list {
   height: 100%;
   position: relative;
   perspective: 500px;
   -webkit-perspective: 500px;
+}
+
+.page-bottom {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+}
+
+.page-top {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
+.music {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: 13%;
+  right: 10%;
+}
+
+.music-animate {
+  animation-name: music;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: 2s;
+}
+
+.text2 {
+  margin: 40% auto;
+  display: block;
+  width: 80%;
+}
+
+.text1 {
+  width: 70%;
+  bottom: 27%;
+  position: absolute;
+  right: 10%;
 }
 
 .one {
@@ -211,12 +284,12 @@ export default {
 
 .one .text {
   width: 70%;
-  margin: 15% auto;
+  margin: 9% auto;
 }
 
 .two {
   z-index: 4;
-  background-image: url('/static/image/page2-1.jpg');
+  background-image: url('/static/image/bg.jpg');
   box-sizing: border-box;
 }
 .three {
