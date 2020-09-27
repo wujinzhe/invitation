@@ -1,17 +1,18 @@
 <template>
   <div id="app">
-    <div class="loading">
+    <div class="loading" v-if="!loadingFinish">
       <div class="box">
-        <img src="@/assets/image/xi.png" class="loading-img"/>
-        <div>1%</div>
+        <img src="@/assets/image/xi.png" class="loading-img" alt="loading"/>
+        <div>{{progress}}%</div>
       </div>
     </div>
-    <Swiper />
+    <Swiper v-if="loadingFinish"/>
   </div>
 </template>
 
 <script>
 import Swiper from '@/components/Swiper'
+import Axios from 'axios'
 
 export default {
   name: 'App',
@@ -21,21 +22,52 @@ export default {
   data () {
     return {
       imgList: [
-        ''
-      ]
+        '/static/image/bg.jpg',
+        '/static/image/border.png',
+        '/static/image/p1.png',
+        '/static/image/p2.png',
+        '/static/image/p3.png',
+        '/static/image/p4.png',
+        '/static/image/page2.jpg',
+        '/static/image/people.png',
+        '/static/image/text.png',
+        '/static/image/title.png',
+        '/static/image/title2.png'
+      ],
+      loadingFinish: false,
+      progress: 0
     }
   },
+  created () {
+    this.loadingImg().then(() => {
+      // 加载完成了所有图片
+      setTimeout(() => {
+        this.loadingFinish = true
+      }, 500)
+    })
+  },
   methods: {
-    loadingImg () {
+    async loadingImg () {
+      const list = [...this.imgList]
+      let count = 0
 
+      // 计算进度
+      while (list.length) {
+        const src = list.shift()
+
+        const data = await this.singleImgFinish(src)
+        console.log('data', data)
+        count++
+
+        console.log('grepress', count, count / this.imgList.length)
+
+        this.progress = ((count / this.imgList.length) * 100).toFixed(0)
+      }
     },
     singleImgFinish (src) {
-      var img = new Image(src)
-
-      return new Promise((resolve, reject) => {
-        img.onload = function () {
-          resolve()
-        }
+      return Axios.get(src).then(res => {
+        // console.log('res', res)
+        return res
       })
     }
   }
