@@ -6,18 +6,21 @@
         <div>{{progress}}%</div>
       </div>
     </div>
+    <Loading v-if="isShowLoading" @click.native="tapLoading"/>
     <Swiper v-if="loadingFinish"/>
   </div>
 </template>
 
 <script>
 import Swiper from '@/components/Swiper'
+import Loading from '@/components/Loading'
 import Axios from 'axios'
 
 export default {
   name: 'App',
   components: {
-    Swiper
+    Swiper,
+    Loading
   },
   data () {
     return {
@@ -39,11 +42,13 @@ export default {
         '/static/image/text1.png',
         '/static/image/text2.png',
         '/static/image/logo_mini.jpg',
+        '/static/image/pointer.png',
         '/static/music/holy.mp3'
       ],
       loadingFinish: false,
       isClose: false, // 因为首页渲染可能需要时间
-      progress: 0
+      progress: 0,
+      isShowLoading: false // 是否显示loading
     }
   },
   created () {
@@ -52,6 +57,12 @@ export default {
       // 加载完成了所有图片
       setTimeout(() => {
         this.isClose = true
+
+        // 显示loading的逻辑
+        const isShow = localStorage.getItem('showLoading')
+
+        // 如果之前有打开过则不显示loading, 如果没有打开过则显示
+        this.isShowLoading = !isShow
       }, 800)
     })
   },
@@ -123,20 +134,20 @@ export default {
       while (list.length) {
         const src = list.shift()
 
-        const data = await this.singleImgFinish(src)
-        console.log('data', data)
+        await Axios.get(src)
+        // console.log('data', data)
         count++
 
-        console.log('grepress', count, count / this.imgList.length)
+        // console.log('grepress', count, count / this.imgList.length)
 
         this.progress = ((count / this.imgList.length) * 100).toFixed(0)
       }
     },
-    singleImgFinish (src) {
-      return Axios.get(src).then(res => {
-        // console.log('res', res)
-        return res
-      })
+
+    /** 点击Loading事件 */
+    tapLoading () {
+      this.isShowLoading = false
+      localStorage.setItem('showLoading', 1)
     }
   }
 }
