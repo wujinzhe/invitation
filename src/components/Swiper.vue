@@ -234,7 +234,7 @@ export default {
   position: absolute;
   width: 30px;
   height: 30px;
-  top: 13%;
+  top: 17%;
   right: 10%;
 }
 
