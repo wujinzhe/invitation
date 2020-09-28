@@ -47,6 +47,7 @@ import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper'
 import Hammer from 'hammerjs'
 import 'swiper/swiper-bundle.css'
 import Pendant from './Pendant'
+// import wx from 'weixin-js-sdk'
 
 export default {
   name: 'CustomeSwiper',
@@ -145,13 +146,19 @@ export default {
     // 初始化手势库
     this.initHammer()
 
-    document.addEventListener('WeixinJSBridgeReady', () => { // 暂时还不知道Yixin是什么东西...
-      this.$refs.audio.play()
-    }, false)
+    // document.addEventListener('WeixinJSBridgeReady', () => { // 暂时还不知道Yixin是什么东西...
+    //   this.$refs.audio.play()
+    // }, false)
 
     setTimeout(() => {
       this.delay = true // 解决页面一加载会闪一下
     }, 500)
+
+    // wx.ready(() => {
+    //   this.$refs.audio.play()
+    // })
+
+    // this.$refs.audio.click()
   },
   methods: {
     /** 播放，停止 */
@@ -234,7 +241,7 @@ export default {
   position: absolute;
   width: 30px;
   height: 30px;
-  top: 17%;
+  top: 13%;
   right: 10%;
 }
 
